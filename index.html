@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Osmanlı Kurumları Vize Kampı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky tab bar over a single reading column; notes get a chip index, quiz is one card at a time */
+:root{
+  --bg:#eef2f7; --surface:#ffffff; --surface2:#e4eaf3; --ink:#152033; --muted:#566377; --line:#cfd8e5;
+  --cobalt:#1d4c9c; --cobalt-soft:#dbe6f8; --turq:#0d7f80; --turq-soft:#d6efee;
+  --good:#1c7a45; --good-soft:#dcf1e4; --bad:#b0302a; --bad-soft:#f8e0de;
+  --display:"Marcellus", "Palatino Linotype", Georgia, serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1420; --surface:#162032; --surface2:#1d2a40; --ink:#e5eaf3; --muted:#9aa7bb; --line:#2a3850;
+  --cobalt:#86a9ff; --cobalt-soft:#1f3260; --turq:#53cbc3; --turq-soft:#143d3d;
+  --good:#5fd08f; --good-soft:#163a26; --bad:#ff8a80; --bad-soft:#47201e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1420; --surface:#162032; --surface2:#1d2a40; --ink:#e5eaf3; --muted:#9aa7bb; --line:#2a3850;
+  --cobalt:#86a9ff; --cobalt-soft:#1f3260; --turq:#53cbc3; --turq-soft:#143d3d;
+  --good:#5fd08f; --good-soft:#163a26; --bad:#ff8a80; --bad-soft:#47201e; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.hero{padding-block:32px 20px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--turq);font-weight:600}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.1;margin:6px 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:0}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{flex:0 0 auto;padding:14px 14px 12px;text-decoration:none;color:var(--muted);font-weight:600;font-size:15px;border-bottom:3px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--cobalt);border-bottom-color:var(--cobalt)}
+nav.tabs a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--turq);outline-offset:2px}
+main{padding-block:24px 64px}
+h2{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.2;margin:0 0 12px;text-wrap:balance}
+h3{font-size:17px;margin:22px 0 6px}
+p{margin:0 0 10px}
+ul{margin:0 0 10px;padding-left:22px}
+li{margin:3px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:500 14px var(--body);cursor:pointer;text-decoration:none}
+.chip:hover{border-color:var(--cobalt)}
+.chip.on{background:var(--cobalt);border-color:var(--cobalt);color:var(--surface)}
+section.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 22px 14px;margin-bottom:18px;scroll-margin-top:70px}
+.num{font-family:var(--display);color:var(--turq);font-size:15px}
+.tip{background:var(--turq-soft);border-left:3px solid var(--turq);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:15px}
+.tip b{color:var(--turq)}
+.tbl{overflow-x:auto;margin:10px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:420px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.term{font-weight:600;color:var(--cobalt)}
+/* quiz */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.score{font-variant-numeric:tabular-nums;color:var(--muted);font-size:15px}
+.progress{height:6px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.progress i{display:block;height:100%;background:var(--cobalt);width:0;transition:width .25s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+.qtopic{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq);font-weight:600}
+.qtext{font-size:19px;font-weight:600;margin:6px 0 16px;line-height:1.4}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:12px 14px;font:16px/1.45 var(--body);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--cobalt)}
+.opt .k{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--surface2);font-weight:700;font-size:13px}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{background:var(--good);color:var(--surface)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:var(--surface)}
+.opt:disabled{cursor:default}
+.expl{margin-top:14px;padding:12px 14px;border-radius:8px;background:var(--cobalt-soft);font-size:15px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{border:0;background:var(--cobalt);color:var(--surface);font:600 15px var(--body);padding:11px 18px;border-radius:8px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--cobalt);border:1px solid var(--line)}
+.result{text-align:center;padding:30px 22px}
+.big{font-family:var(--display);font-size:56px;line-height:1;color:var(--cobalt);font-variant-numeric:tabular-nums}
+/* flashcards */
+.flash{perspective:1200px;cursor:pointer;user-select:none}
+.flash-in{position:relative;min-height:230px;transition:transform .45s;transform-style:preserve-3d}
+.flash.flip .flash-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px}
+.front{background:var(--surface)}
+.front .w{font-family:var(--display);font-size:clamp(28px,6vw,38px);color:var(--cobalt)}
+.back{background:var(--cobalt-soft);transform:rotateY(180deg);font-size:18px;line-height:1.5}
+.hint{color:var(--muted);font-size:13px;margin-top:10px}
+/* open questions & chronology */
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:12px}
+summary{cursor:pointer;padding:16px 18px;font-weight:600;list-style:none;display:flex;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary .num{flex:0 0 auto}
+details[open] summary{border-bottom:1px solid var(--line)}
+.ans{padding:14px 18px 8px}
+.ans h4{margin:10px 0 4px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--turq)}
+.timeline{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 18px 22px;margin:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--cobalt)}
+.timeline .y{font-family:var(--display);font-size:22px;color:var(--cobalt);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+@media (max-width:520px){section.note,.card{padding:18px 16px}.qtext{font-size:17px}}
+@media (prefers-reduced-motion:reduce){.flash-in,.progress i{transition:none}}
+/* welcome overlay */
+#welcome{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:opacity .6s}
+#welcome.out{opacity:0;pointer-events:none}
+.wcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:34px 28px 28px;max-width:440px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(10,20,40,.28);animation:pop .5s cubic-bezier(.2,.9,.3,1.3)}
+.wstar{width:54px;height:54px;margin:0 auto 14px;color:var(--cobalt)}
+.wcard .eyebrow{margin-bottom:6px}
+.wcard h2{font-size:clamp(26px,6vw,32px);margin:0 0 10px}
+.wcard h2 span{color:var(--cobalt)}
+.wcard p{color:var(--muted);margin:0 0 22px}
+.wcard .btn{font-size:17px;padding:14px 34px;border-radius:999px}
+.wcard .btn:hover{filter:brightness(1.08)}
+#cheer{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none;text-align:center;padding:0 16px}
+#cheer div{font-family:var(--display);font-size:clamp(30px,8vw,56px);line-height:1.15;color:var(--cobalt);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px 30px;box-shadow:0 24px 60px rgba(10,20,40,.28);animation:pop .6s cubic-bezier(.2,.9,.3,1.4)}
+#confetti{position:fixed;inset:0;z-index:55;pointer-events:none;width:100%;height:100%}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.wcard,#cheer div{animation:none}}
+</style>
+</head>
+<body>
+
+<div id="welcome" role="dialog" aria-modal="true" aria-labelledby="wtitle">
+  <div class="wcard">
+    <svg class="wstar" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5"><rect x="22" y="22" width="56" height="56"/><rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="12"/></g></svg>
+    <div class="eyebrow">Osmanlı Kurumları Tarihi · Vize</div>
+    <h2 id="wtitle">Hoş geldin <span>Lütfü Sarsıer</span>!</h2>
+    <p>Yarınki sınava hazırlanmaya hazır mısın?</p>
+    <button class="btn" id="ready" type="button">Hazırım</button>
+  </div>
+</div>
+<canvas id="confetti" hidden></canvas>
+<div id="cheer" hidden><div>Haydi Lütfü, başarılar!</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Vize hazırlık · Yarın sınav</div>
+  <h1>Osmanlı Kurumları Tarihi</h1>
+  <p class="lead">Sunumdaki bütün konuların özet notları, 71 soruluk test, kavram kartları, klasik soru havuzu ve kronoloji. Testte yanlış yaptıkların kaydedilir, sonra sadece onları tekrar çözebilirsin.</p>
+</div></header>
+
+<nav class="tabs" aria-label="Bölümler"><div class="wrap">
+  <a href="#notlar" data-tab="notlar">Notlar</a>
+  <a href="#test" data-tab="test">Test</a>
+  <a href="#kartlar" data-tab="kartlar">Kartlar</a>
+  <a href="#klasik" data-tab="klasik">Klasik sorular</a>
+  <a href="#kronoloji" data-tab="kronoloji">Kronoloji</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ============ NOTLAR ============ -->
+<div id="v-notlar" data-view>
+  <div class="chips" id="toc"></div>
+
+  <section class="note" id="n1" data-t="Kuruluş">
+    <div class="num">1</div><h2>Kuruluş ve ilk kurumlaşma</h2>
+    <ul>
+      <li>Osmanlı Beyliği <b>13. yy sonlarında</b>, Anadolu'daki siyasi parçalanma ortamında çıktı.</li>
+      <li><b>1243 Kösedağ Savaşı</b> → Türkiye Selçuklu otoritesi zayıfladı → beylikler güçlendi.</li>
+      <li><b>Bizans sınırında</b> olmak fetih ve genişleme fırsatı verdi.</li>
+      <li>Toplumsal unsurlar: Türkmen göçleri, gaza anlayışı, ahiler, derviş çevreleri.</li>
+      <li>Büyüme tek nedene indirgenemez: coğrafya + siyaset + askerî örgütlenme + yerel ittifaklar.</li>
+    </ul>
+    <h3>Orhan Gazi (1324–1362)</h3>
+    <ul>
+      <li><b>1326</b> Bursa'nın fethi, başkent yapılması.</li>
+      <li><b>1331</b> İznik'te ilk Osmanlı medresesi.</li>
+      <li><b>Yaya ve müsellem</b> birlikleri (ilk düzenli askerî birlikler).</li>
+      <li>İlk akçe basıldı, bürokratik kurumlar gelişti.</li>
+    </ul>
+    <h3>I. Murad (1362–1389) ve Fatih</h3>
+    <ul>
+      <li>Edirne başkent oldu, Rumeli'de genişleme.</li>
+      <li><b>Beylerbeylik, kazaskerlik, kapıkulu</b> teşkilatı gelişti.</li>
+      <li>Fatih: merkezî otorite güçlendi; Divan, saray, kanunname ve bürokrasi sistemli hâle geldi.</li>
+    </ul>
+    <div class="tip"><b>Sınav ipucu:</b> Kuruluşu açıklarken siyasi, coğrafi, sosyal ve askerî faktörleri birlikte say.</div>
+  </section>
+
+  <section class="note" id="n2" data-t="Devlet anlayışı">
+    <div class="num">2</div><h2>Devlet anlayışının temel ilkeleri</h2>
+    <div class="tbl"><table>
+      <tr><th>İlke</th><th>Anlamı</th></tr>
+      <tr><td class="term">Hanedan egemenliği</td><td>Hükümdarlık Osmanlı hanedanına aittir; veraset usulü zamanla değişti.</td></tr>
+      <tr><td class="term">Merkezî otorite</td><td>Padişah en yüksek siyasi ve askerî otoritedir; yönetim kurumlar eliyle yürür.</td></tr>
+      <tr><td class="term">Adalet</td><td>Halkı korumak, vergi düzeni, yöneticileri denetlemek. Meşruiyetin temeli.</td></tr>
+      <tr><td class="term">Nizam-ı âlem</td><td>Devlet düzeninin ve toplumsal istikrarın korunması düşüncesi.</td></tr>
+      <tr><td class="term">İstimalet</td><td>Fethedilen yerlerde yerel halkı yönetime ısındıran uzlaştırıcı siyaset.</td></tr>
+    </table></div>
+    <p class="muted">Osmanlı yönetimi Türk-İslam devlet geleneği ve farklı tarihsel tecrübelerle şekillendi.</p>
+  </section>
+
+  <section class="note" id="n3" data-t="Padişah ve veraset">
+    <div class="num">3</div><h2>Merkez teşkilatı: padişah ve veraset</h2>
+    <ul>
+      <li>Merkez teşkilatı = devletin siyasi, askerî, mali, idari kararlarının üretildiği <b>yönetim çekirdeği</b>.</li>
+      <li>Klasik dönemde üç alan: <b>hükümdarlık-saray</b>, <b>Divan-ı Hümayun</b>, <b>kalemiye bürokrasisi</b>.</li>
+      <li>Padişah: devletin başı, başkomutan, yürütmenin en üst sahibi. Atama, azil, ferman.</li>
+      <li>Erken dönemde veraset kurala bağlı değildi → taht mücadeleleri.</li>
+      <li><b>Fatih Kanunnamesi</b>: kardeş katlini <b>nizam-ı âlem</b> gerekçesiyle düzenledi.</li>
+      <li><b>I. Ahmed</b> döneminde <b>ekberiyet</b> güçlendi: hanedanın en yaşlı erkek üyesi tahta geçer. Amaç taht kavgalarını azaltmak.</li>
+    </ul>
+    <div class="tip"><b>Karıştırma:</b> Ekberiyet = en yaşlı erkek üye. Erşed = en olgun/uygun olan.</div>
+    <p>17–18. yüzyılda Divan'ın ağırlığı azaldı, <b>sadrazamlık ve Bâbıâli</b> öne çıktı.</p>
+  </section>
+
+  <section class="note" id="n4" data-t="Divan-ı Hümayun">
+    <div class="num">4</div><h2>Divan-ı Hümayun</h2>
+    <ul>
+      <li>Devlet işlerinin görüşüldüğü en önemli merkezî <b>yönetim ve danışma organı</b>.</li>
+      <li>Siyasi, askerî, mali, idari, hukuki meseleler; şikâyetler; elçi kabulleri.</li>
+      <li>Erken dönemde padişah başkanlık ederdi. <b>Fatih döneminde padişah toplantılara katılmamaya başladı</b> → toplantılar sadrazam başkanlığında → sadrazamın fiilî gücü arttı.</li>
+      <li>Toplantı sonrası sadrazam padişaha <b>arz</b>da bulunur.</li>
+      <li>17. yy: <b>İkindi Divanı</b> gibi kanallar; 18. yy: <b>Bâbıâli</b> önem kazandı.</li>
+    </ul>
+    <div class="tip"><b>Dikkat:</b> Divan modern anlamda parlamento değildir; padişahın yürütme ve danışma organıdır.</div>
+    <h3>Üyeler ve görevleri</h3>
+    <div class="tbl"><table>
+      <tr><th>Üye</th><th>Görev</th></tr>
+      <tr><td class="term">Sadrazam</td><td>Padişahın mührünü taşır; en yüksek yürütme görevlisi; Divan'a başkanlık eder.</td></tr>
+      <tr><td class="term">Vezirler</td><td>Sadrazama yardımcı; askerî ve idari görevler.</td></tr>
+      <tr><td class="term">Kazasker</td><td>İlmiyenin yüksek görevlisi; kadı ve müderris atamaları. Anadolu ve Rumeli kazaskeri var; <b>Rumeli</b> protokolde üstte.</td></tr>
+      <tr><td class="term">Defterdar</td><td>Maliye ve hazine; gelir-gider kayıtları, bütçe.</td></tr>
+      <tr><td class="term">Nişancı</td><td>Fermanlara <b>tuğra</b> çeker; örfî hukuk, kanun ve arazi kayıtları uzmanı.</td></tr>
+      <tr><td class="term">Reisülküttap</td><td>Divan yazışmaları; zamanla diplomasi. <b>1836'da Hariciye Nezareti</b>ne dönüştü.</td></tr>
+      <tr><td class="term">Yeniçeri ağası</td><td>Merkez ordusu komutanı; askerî konularda bilgi verir.</td></tr>
+      <tr><td class="term">Kaptan-ı derya</td><td>Donanma başkomutanı.</td></tr>
+    </table></div>
+  </section>
+
+  <section class="note" id="n5" data-t="Saray">
+    <div class="num">5</div><h2>Saray teşkilatı: Birun, Enderun, Harem</h2>
+    <p>Saray sadece padişahın evi değil; <b>yönetim, eğitim ve temsil merkezi</b>.</p>
+    <div class="tbl"><table>
+      <tr><th>Bölüm</th><th>Ne?</th><th>Kimler?</th></tr>
+      <tr><td class="term">Birun</td><td>Sarayın dış hizmetleri</td><td>Kapıcılar, çavuşlar, mehterler, seyisler, bostancılar</td></tr>
+      <tr><td class="term">Enderun</td><td>Saray içinde yönetici yetiştiren okul</td><td>Devşirme kökenli yetenekli çocuklar</td></tr>
+      <tr><td class="term">Harem</td><td>Padişah ailesinin yaşadığı bölüm</td><td>Valide Sultan, haseki, kadın efendiler, harem ağaları, Darüssaade Ağası</td></tr>
+    </table></div>
+    <ul>
+      <li>Enderun'da dil, din, tarih, edebiyat, matematik, sanat, protokol, yönetim. Amaç: saraya bağlı nitelikli yönetici kadrosu.</li>
+      <li><b>Darüssaade Ağası</b> harem teşkilatında önemli görevli.</li>
+      <li>Valide Sultanlar özellikle <b>16. yy sonrası</b> siyasette etkili olabildi.</li>
+    </ul>
+  </section>
+
+  <section class="note" id="n6" data-t="Taşra">
+    <div class="num">6</div><h2>Taşra teşkilatı</h2>
+    <p>Klasik hiyerarşi: <b>Eyalet → Sancak → Kaza → Köy</b></p>
+    <div class="tbl"><table>
+      <tr><th>Birim</th><th>Yönetici</th><th>Görev</th></tr>
+      <tr><td>Eyalet</td><td class="term">Beylerbeyi</td><td>Askerî ve idari yönetici</td></tr>
+      <tr><td>Sancak</td><td class="term">Sancakbeyi</td><td>Güvenlik, asker toplama, merkez emirlerini uygulama</td></tr>
+      <tr><td>Kaza</td><td class="term">Kadı</td><td>Yargı + bazı beledî-idari işler (pazar, vakıf denetimi)</td></tr>
+    </table></div>
+    <ul>
+      <li>Kadı şer'i ve örfî hukukla yargılar: evlilik, boşanma, miras, borç, mülkiyet. Kayıtlar <b>şer'iyye sicilleri</b>nde tutulur.</li>
+    </ul>
+    <h3>Eyalet türleri</h3>
+    <div class="tbl"><table>
+      <tr><th>Tür</th><th>Özellik</th><th>Örnek</th></tr>
+      <tr><td class="term">Salyaneli</td><td>Gelir merkez hazineye; görevlilere yıllık ödeme (salyane)</td><td>Mısır, Bağdat, Yemen, Basra</td></tr>
+      <tr><td class="term">Salyanesiz</td><td>Dirlik-tımar sistemi uygulanır</td><td>Rumeli, Anadolu, Karaman</td></tr>
+      <tr><td class="term">Özel statülü</td><td>Yerel hanedan korunur; vergi, asker, bağlılık şartları farklı</td><td>Eflak, Boğdan, Erdel, Kırım</td></tr>
+    </table></div>
+  </section>
+
+  <section class="note" id="n7" data-t="Askerî teşkilat">
+    <div class="num">7</div><h2>Askerî teşkilat</h2>
+    <ul>
+      <li><b>Kapıkulu</b>: padişaha bağlı, maaşlı, sürekli merkez ordusu.</li>
+      <li><b>Eyalet askerleri</b>: en önemlisi tımarlı sipahiler.</li>
+      <li><b>Donanma</b>: Akdeniz ve Karadeniz siyasetinin temel parçası.</li>
+    </ul>
+    <h3>İnsan kaynağı</h3>
+    <div class="tbl"><table>
+      <tr><th>Sistem</th><th>Ne?</th></tr>
+      <tr><td class="term">Pençik</td><td>Savaş esirlerinin <b>beşte biri</b> devlet payı. Erken dönem kaynağı.</td></tr>
+      <tr><td class="term">Devşirme</td><td>Özellikle Balkanlardaki gayrimüslim erkek çocukların toplanması; yeteneğe göre askerî veya saray hizmetine.</td></tr>
+    </table></div>
+    <ul>
+      <li><b>Acemi Oğlanlar Ocağı</b>: hazırlık/eğitim (Türkçe, din, disiplin, beden, askerlik).</li>
+      <li><b>Yeniçeri Ocağı</b>: <b>I. Murad</b> döneminde kurulduğu kabul edilir; merkez piyade kuvveti, aktif hizmet.</li>
+      <li><b>Ulufe</b> = üç aylık maaş. <b>Cülus bahşişi</b> = padişahın tahta çıkışında verilen ödeme.</li>
+    </ul>
+    <h3>Kapıkulu piyadeleri</h3>
+    <div class="tbl"><table>
+      <tr><td class="term">Cebeciler</td><td>Silah yapımı, bakımı, muhafazası</td></tr>
+      <tr><td class="term">Topçular</td><td>Top kullanımı</td></tr>
+      <tr><td class="term">Top arabacıları</td><td>Topların taşınması</td></tr>
+      <tr><td class="term">Humbaracılar</td><td>Humbara ve patlayıcı mühimmat</td></tr>
+      <tr><td class="term">Lağımcılar</td><td>Tünel kazma, kuşatma</td></tr>
+      <tr><td class="term">Bostancılar</td><td>Saray ve kıyı güvenliği</td></tr>
+    </table></div>
+    <p><b>Kapıkulu süvarileri (6 bölük):</b> Sipahiler, Silahtarlar, Sağ ve Sol Ulufeciler, Sağ ve Sol Garipler. Sipahi ve silahtar protokolde üstte.</p>
+    <h3>Tımarlı sipahi</h3>
+    <ul>
+      <li>Dirlik geliri karşılığı hizmet veren atlı asker; maaş almaz.</li>
+      <li>Savaşta gelirine göre <b>cebelü</b> (yardımcı asker) getirir. Barışta yerel güvenlik.</li>
+      <li>Amaç: tarım gelirini askerlikle bağlamak, hazinenin nakit yükünü azaltmak.</li>
+    </ul>
+    <div class="tip"><b>Dikkat:</b> Tımarlı sipahi toprağın sahibi değildir; dirlik gelirinden yararlanma hakkı vardır.</div>
+    <h3>Yeniçeri Ocağı'nın sonu</h3>
+    <ul>
+      <li>16. yy sonundan itibaren disiplin bozuldu: usulsüz kayıt, esnaflık, siyasete müdahale, Avrupa'daki askerî değişime uyum sorunu.</li>
+      <li><b>1826 Vak'a-i Hayriye</b> (II. Mahmud) → ocak kaldırıldı → yerine <b>Asâkir-i Mansûre-i Muhammediye</b>.</li>
+    </ul>
+    <h3>Donanma</h3>
+    <p>Başında <b>Kaptan-ı Derya</b>. 16. yy Akdeniz rekabetinde belirleyici. Önemli denizciler: Barbaros Hayreddin Paşa, Turgut Reis, Piyale Paşa, Kılıç Ali Paşa.</p>
+  </section>
+
+  <section class="note" id="n8" data-t="Hukuk">
+    <div class="num">8</div><h2>Hukuk teşkilatı</h2>
+    <div class="tbl"><table>
+      <tr><th></th><th>Şer'i hukuk</th><th>Örfî hukuk</th></tr>
+      <tr><td><b>Dayanak</b></td><td>Kur'an, sünnet, icma, kıyas</td><td>Padişahın kamu düzeni için koyduğu kurallar</td></tr>
+      <tr><td><b>Alan</b></td><td>Aile, miras, vakıf, borç, mülkiyet</td><td>Vergi, toprak düzeni, kamu güvenliği, idare</td></tr>
+      <tr><td><b>Kaynak</b></td><td>İslam hukuku kaynakları</td><td>Kanunnameler; şer'i hukuka aykırı olamaz</td></tr>
+    </table></div>
+    <div class="tbl"><table>
+      <tr><th>Makam</th><th>İşi</th></tr>
+      <tr><td class="term">Kadı</td><td>Yargılar, <b>hüküm</b> verir; bazı yerel idari işler.</td></tr>
+      <tr><td class="term">Kazasker</td><td>Kadı ve müderris atamaları, ilmiyeyi denetler.</td></tr>
+      <tr><td class="term">Şeyhülislam</td><td><b>Fetva</b> veren en yüksek ilmiye makamı. İlki: <b>Molla Fenari</b>.</td></tr>
+    </table></div>
+    <div class="tip"><b>Kısaca:</b> Kadı hüküm verir, şeyhülislam fetva verir, kazasker atar. Fetva her zaman mahkeme hükmü demek değildir.</div>
+  </section>
+
+  <section class="note" id="n9" data-t="Toprak ve dirlik">
+    <div class="num">9</div><h2>Toprak sistemi ve dirlik</h2>
+    <div class="tbl"><table>
+      <tr><th>Arazi</th><th>Özellik</th></tr>
+      <tr><td class="term">Miri</td><td>Mülkiyeti devletin; kullanım ve gelir hakları tahsis edilir.</td></tr>
+      <tr><td class="term">Mülk</td><td>Özel mülkiyet; satılabilir, miras bırakılabilir.</td></tr>
+      <tr><td class="term">Vakıf</td><td>Geliri cami, medrese, imaret, hastane gibi hizmetlere ayrılmış.</td></tr>
+    </table></div>
+    <p><b>Dirlik</b>: miri arazi gelirinin hizmet karşılığı görevliye tahsisi. Mülkiyet değil, gelir hakkı.</p>
+    <div class="tbl"><table>
+      <tr><th>Dirlik</th><th>Yıllık gelir (akçe)</th></tr>
+      <tr><td class="term">Has</td><td class="n">100.000’den fazla</td></tr>
+      <tr><td class="term">Zeamet</td><td class="n">20.000 – 100.000</td></tr>
+      <tr><td class="term">Tımar</td><td class="n">3.000 – 20.000</td></tr>
+    </table></div>
+    <h3>Tımarın 4 amacı</h3>
+    <ul>
+      <li><b>Askerî</b>: sipahi + cebelü ile taşra ordusu.</li>
+      <li><b>Mali</b>: nakit maaş ödemeden askeri finanse etmek.</li>
+      <li><b>Üretim</b>: toprağın işlenmesinin sürmesi.</li>
+      <li><b>İdari</b>: taşrada güvenlik ve merkezin nüfuzu.</li>
+    </ul>
+    <p><b>Bozulma nedenleri:</b> usulsüz tahsis, nakit ihtiyacı, savaş biçiminin değişmesi, denetim sorunları.</p>
+  </section>
+
+  <section class="note" id="n10" data-t="İltizam ve vergiler">
+    <div class="num">10</div><h2>İltizam, malikâne ve vergiler</h2>
+    <div class="tbl"><table>
+      <tr><th></th><th>İltizam</th><th>Malikâne</th></tr>
+      <tr><td><b>Ne?</b></td><td>Vergi toplama hakkı açık artırmayla <b>mültezime</b> verilir</td><td>Vergi toplama hakkı peşin ödeme + yıllık yükümlülükle verilir</td></tr>
+      <tr><td><b>Süre</b></td><td>Süreli</td><td>Çoğunlukla <b>kaydıhayat</b> (ömür boyu)</td></tr>
+      <tr><td><b>Neden</b></td><td>Nakit ihtiyacı, uzun savaşlar</td><td>Hazineye düzenli, uzun vadeli gelir</td></tr>
+      <tr><td><b>Tarih</b></td><td>—</td><td class="n">1695</td></tr>
+    </table></div>
+    <h3>Vergiler</h3>
+    <div class="tbl"><table>
+      <tr><th>Şer'i vergiler</th><th>Örfî vergiler</th></tr>
+      <tr><td><b>Öşür</b>: Müslümanların tarım ürününden<br><b>Haraç</b>: gayrimüslimlerin toprağıyla ilgili<br><b>Cizye</b>: gayrimüslim erkeklerden baş vergisi</td><td>Çift resmi, Avarız, Nüzul, Sürsat, İspenç<br><span class="muted">Devletin kamu ve askerî ihtiyacına göre düzenlenir</span></td></tr>
+    </table></div>
+  </section>
+
+  <section class="note" id="n11" data-t="Vakıf">
+    <div class="num">11</div><h2>Vakıf sistemi</h2>
+    <ul>
+      <li>Bir malın gelirinin hayır veya kamu hizmetine tahsisi.</li>
+      <li>Cami, medrese, imaret, hastane, çeşme, köprü, yol finansmanı.</li>
+      <li><b>Vâkıf</b> = vakfı kuran. <b>Mütevelli</b> = vakfı yöneten.</li>
+      <li>Sosyal dayanışma, eğitim ve sağlık; şehirlerin fiziksel ve sosyal altyapısı.</li>
+    </ul>
+  </section>
+
+  <section class="note" id="n12" data-t="Eğitim">
+    <div class="num">12</div><h2>Eğitim ve ilmiye</h2>
+    <ul>
+      <li><b>Sıbyan mektebi</b>: temel eğitim (Kur'an, temel din, yazı, hesap); mahalle ve vakıfla bağlantılı.</li>
+      <li><b>Medrese</b>: yüksek dinî ve aklî eğitim. İlki <b>1331 İznik</b>, Orhan Gazi. İlk müderris <b>Davud-ı Kayserî</b>.</li>
+      <li>Dersler: tefsir, hadis, fıkıh, kelam, Arapça, mantık, aklî ilimler.</li>
+      <li><b>Fatih → Sahn-ı Seman</b>; <b>Kanuni → Süleymaniye</b> medreseleri.</li>
+      <li><b>İlmiye</b>: din, hukuk, eğitimde görevli ulema. Makamlar: şeyhülislam, kazasker, kadı, müderris.</li>
+    </ul>
+    <div class="tbl"><table>
+      <tr><th></th><th>Enderun</th><th>Medrese</th></tr>
+      <tr><td><b>Yer</b></td><td>Saray içi</td><td>Kurumsal eğitim yapısı, vakıfla finanse</td></tr>
+      <tr><td><b>Yetiştirdiği</b></td><td>Devlet yöneticisi, saray bürokratı</td><td>Ulema, hukuk-din görevlisi</td></tr>
+      <tr><td><b>Öne çıkan</b></td><td>Saray hizmeti, protokol, yönetim, uygulama</td><td>Dinî, hukukî, aklî ilimler müfredatı</td></tr>
+    </table></div>
+    <div class="tip"><b>Sınav ipucu:</b> İkisi birbirinin alternatifi değil; farklı insan kaynağı ihtiyacını karşılar.</div>
+  </section>
+
+  <section class="note" id="n13" data-t="Dönüşüm ve reform">
+    <div class="num">13</div><h2>Klasik kurumların dönüşümü ve reformlar</h2>
+    <h3>Nedenler (16. yy sonundan itibaren)</h3>
+    <ul>
+      <li>Coğrafi keşifler, değerli maden akışı, fiyat artışı, akçenin değer kaybı.</li>
+      <li>Uzun savaşlar, ateşli silahların yaygınlaşması.</li>
+      <li>Tımarın zayıflaması → iltizam ve nakit ihtiyacı.</li>
+      <li>Rüşvet, iltimas, taşrada denetim sorunu.</li>
+    </ul>
+    <div class="tip"><b>Dikkat:</b> Değişimi sadece "bozulma" diye anlatma; ekonomik ve askerî dönüşümü açıkla.</div>
+    <h3>Celali İsyanları ve Büyük Kaçgun</h3>
+    <ul>
+      <li>16. yy sonu – 17. yy başı, Anadolu.</li>
+      <li>Nedenler: ağır vergi, ekonomik sıkıntı, tımar sorunları, işsiz <b>sekban ve levent</b>ler.</li>
+      <li>Liderler: <b>Karayazıcı, Deli Hasan, Kalenderoğlu, Canbolatoğlu</b>.</li>
+      <li><b>Büyük Kaçgun</b>: köylülerin güvenlik ve geçim sorunu yüzünden köyünü terk edip göç etmesi.</li>
+    </ul>
+    <h3>Reformlar</h3>
+    <div class="tbl"><table>
+      <tr><th>Tarih</th><th>Gelişme</th></tr>
+      <tr><td class="n">1718–1730</td><td>Lale Devri: Avrupa'yı tanıma, kültürel-teknik yenilik</td></tr>
+      <tr><td class="n">1773</td><td>Mühendishane-i Bahr-i Hümayun (askerî teknik eğitim)</td></tr>
+      <tr><td class="n">1789–1807</td><td>III. Selim: Nizam-ı Cedid ordusu, İrad-ı Cedid hazinesi</td></tr>
+      <tr><td class="n">1808–1839</td><td>II. Mahmud: bürokrasi, ordu ve yönetimde kapsamlı dönüşüm</td></tr>
+      <tr><td class="n">1826</td><td>Vak'a-i Hayriye; Asâkir-i Mansûre-i Muhammediye</td></tr>
+      <tr><td class="n">1836</td><td>Hariciye Nezareti</td></tr>
+      <tr><td class="n">1839</td><td>Tanzimat Fermanı: can, mal, namus güvenliği; vergi, askerlik, yargılama düzeni</td></tr>
+      <tr><td class="n">1856</td><td>Islahat Fermanı: gayrimüslimlerin hakları ve devlet hizmetine katılım</td></tr>
+      <tr><td class="n">1876</td><td>Kanun-ı Esasi, I. Meşrutiyet</td></tr>
+    </table></div>
+    <p>19. yüzyılda klasik Divan yerini <b>nezaretlere</b> ve modern bürokrasiye bıraktı.</p>
+  </section>
+
+  <section class="note" id="n14" data-t="Sık karıştırılanlar">
+    <div class="num">14</div><h2>Sık karıştırılanlar</h2>
+    <div class="tbl"><table>
+      <tr><th>Bu</th><th>Şu değil</th></tr>
+      <tr><td><b>Pençik</b>: esirlerin beşte biri</td><td><b>Devşirme</b>: gayrimüslim çocukların toplanması</td></tr>
+      <tr><td><b>Acemi Oğlanlar</b>: hazırlık</td><td><b>Yeniçeri Ocağı</b>: aktif askerlik</td></tr>
+      <tr><td><b>Kadı</b>: hüküm</td><td><b>Şeyhülislam</b>: fetva</td></tr>
+      <tr><td><b>Vâkıf</b>: kuran</td><td><b>Mütevelli</b>: yöneten</td></tr>
+      <tr><td><b>İltizam</b>: süreli</td><td><b>Malikâne</b>: kaydıhayat</td></tr>
+      <tr><td><b>Ekberiyet</b>: en yaşlı</td><td><b>Erşed</b>: en uygun</td></tr>
+      <tr><td><b>Salyaneli</b>: gelir hazineye (Mısır)</td><td><b>Salyanesiz</b>: tımar var (Anadolu)</td></tr>
+      <tr><td><b>Birun</b>: dış hizmet</td><td><b>Enderun</b>: saray okulu</td></tr>
+      <tr><td><b>Nişancı</b>: tuğra, kanun</td><td><b>Reisülküttap</b>: yazışma, diplomasi</td></tr>
+    </table></div>
+    <div class="tip"><b>Klasik cevap formülü:</b> tanım → tarihsel arka plan → görev/işleyiş → sonuç ve önem.</div>
+  </section>
+</div>
+
+<!-- ============ TEST ============ -->
+<div id="v-test" data-view hidden>
+  <div class="chips" id="qfilters"></div>
+  <div class="bar">
+    <div class="score" id="qscore"></div>
+    <button class="btn ghost" id="qwrongbtn" type="button">Yanlışlarımı çöz</button>
+  </div>
+  <div class="progress"><i id="qprog"></i></div>
+  <div class="card" id="qcard"></div>
+</div>
+
+<!-- ============ KARTLAR ============ -->
+<div id="v-kartlar" data-view hidden>
+  <p class="muted">Karta dokun, arkasını gör. Bildiklerini "Biliyorum" ile geç, bilmediklerin destede kalsın.</p>
+  <div class="bar"><div class="score" id="fscore"></div><button class="btn ghost" id="fshuffle" type="button">Karıştır</button></div>
+  <div class="flash" id="flash" tabindex="0" role="button" aria-label="Kartı çevir">
+    <div class="flash-in"><div class="face front"><div class="w" id="fword"></div><div class="hint">Çevirmek için dokun</div></div><div class="face back" id="fdef"></div></div>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" id="fprev" type="button">Önceki</button>
+    <button class="btn ghost" id="fagain" type="button">Tekrar sor</button>
+    <button class="btn" id="fknow" type="button">Biliyorum</button>
+  </div>
+</div>
+
+<!-- ============ KLASİK ============ -->
+<div id="v-klasik" data-view hidden>
+  <p class="muted">Sunumdaki klasik soru havuzu. Önce kendin kâğıda cevap yaz, sonra açıp karşılaştır. Cevaplar "tanım → arka plan → işleyiş → sonuç" formülüne göre.</p>
+  <div id="openq"></div>
+</div>
+
+<!-- ============ KRONOLOJİ ============ -->
+<div id="v-kronoloji" data-view hidden>
+  <p class="muted">Tarihi tek başına ezberleme; her tarihi bir kuruma bağla.</p>
+  <ul class="timeline" id="tl"></ul>
+</div>
+
+</main>
+
+<script>
+const Q=[
+["Kuruluş","Türkiye Selçuklu merkezî otoritesini zayıflatıp beyliklerin güçlenmesini kolaylaştıran savaş hangisidir?",["Malazgirt (1071)","Kösedağ (1243)","Miryokefalon (1176)","Ankara (1402)"],1,"1243 Kösedağ Savaşı'ndan sonra Selçuklu otoritesi zayıfladı, Osmanlı gibi beylikler güçlendi."],
+["Kuruluş","Bursa hangi yıl fethedilip başkent yapıldı?",["1299","1326","1331","1362"],1,"1326'da Orhan Gazi döneminde Bursa fethedildi ve başkent oldu."],
+["Kuruluş","İlk Osmanlı medresesi nerede ve hangi yıl açıldı?",["Bursa, 1326","Edirne, 1362","İznik, 1331","İstanbul, 1453"],2,"İlk medrese 1331'de İznik'te Orhan Gazi tarafından açıldı."],
+["Kuruluş","Yaya ve müsellem birlikleri hangi hükümdar döneminde düzenlendi?",["Osman Bey","Orhan Gazi","I. Murad","Fatih"],1,"Yaya ve müsellem birlikleri, ilk akçe ve ilk medrese Orhan Gazi dönemidir."],
+["Kuruluş","Edirne'nin başkent olması ve beylerbeylik, kazaskerlik, kapıkulu teşkilatının gelişmesi hangi dönemle ilişkilidir?",["Orhan Gazi","I. Murad","Yıldırım Bayezid","II. Murad"],1,"I. Murad (1362–1389) döneminde Edirne başkent oldu, bu kurumlar gelişti."],
+["Devlet anlayışı","Fethedilen bölgelerde yerel halkın yönetime uyumunu kolaylaştıran uzlaştırıcı siyasete ne denir?",["Nizam-ı âlem","İstimalet","İskân","Ekberiyet"],1,"İstimalet: yerel halkı gönül alarak yönetime ısındırma siyaseti."],
+["Devlet anlayışı","Devlet düzeninin ve toplumsal istikrarın korunması düşüncesi hangi kavramla ifade edilir?",["İstimalet","Nizam-ı âlem","Gaza","Örf"],1,"Nizam-ı âlem; Fatih Kanunnamesi'nde kardeş katlinin gerekçesi olarak da geçer."],
+["Padişah","Kardeş katlini nizam-ı âlem gerekçesiyle düzenleyen metin hangisidir?",["Tanzimat Fermanı","Fatih Kanunnamesi","Kanun-ı Esasi","Islahat Fermanı"],1,"Fatih Kanunnamesi kardeş katlini nizam-ı âlem gerekçesiyle düzenler."],
+["Padişah","Ekberiyet ilkesi hangi padişah döneminde güçlendi?",["Fatih","Kanuni","I. Ahmed","II. Mahmud"],2,"I. Ahmed döneminde hanedanın en yaşlı erkek üyesinin tahta geçmesi (ekberiyet) öne çıktı."],
+["Padişah","Ekberiyet ilkesi neyi ifade eder?",["En uygun/olgun olanın tahta geçmesi","Hanedanın en yaşlı erkek üyesinin tahta geçmesi","Padişahın büyük oğlunun tahta geçmesi","Divan'ın padişahı seçmesi"],1,"Ekberiyet = en yaşlı erkek üye. En olgun/uygun olan ise erşed."],
+["Padişah","\"Erşed\" kavramının anlamı nedir?",["En yaşlı","En olgun/uygun","En küçük","Seçilmiş"],1,"Erşed = en olgun/uygun olan. Ekberiyet ile karıştırma."],
+["Divan","Padişahın Divan toplantılarına doğrudan katılmamaya başlaması hangi dönemdedir?",["Orhan Gazi","I. Murad","Fatih","III. Selim"],2,"Fatih'ten itibaren toplantıları sadrazam yönetti ve sadrazamın fiilî gücü arttı."],
+["Divan","Divan-ı Hümayun için hangisi YANLIŞTIR?",["Elçi kabulleri yapılırdı","Şikâyetler değerlendirilirdi","Modern anlamda bir parlamentodur","Toplantılar sonrası sadrazam padişaha arz ederdi"],2,"Divan parlamento değildir; padişahın yürütme ve danışma organıdır."],
+["Divan","18. yüzyılda Divan-ı Hümayun'un yerine öne çıkan yönetim merkezi hangisidir?",["Enderun","Bâbıâli","Meclis-i Mebusan","Harem"],1,"17. yy'da İkindi Divanı, 18. yy'da Bâbıâli (sadrazamlık) önem kazandı."],
+["Divan","Padişahın mührünü taşıyan, en yüksek yürütme görevlisi kimdir?",["Nişancı","Sadrazam","Kazasker","Defterdar"],1,"Sadrazam padişahın mührünü taşır ve Divan'a başkanlık eder."],
+["Divan","Padişah fermanlarına tuğra çeken Divan üyesi kimdir?",["Reisülküttap","Defterdar","Nişancı","Kazasker"],2,"Nişancı tuğra çeker; örfî hukuk, kanun ve arazi kayıtlarında uzmandır."],
+["Divan","Maliye ve hazine işlerinin başlıca sorumlusu kimdir?",["Defterdar","Nişancı","Mültezim","Kaptan-ı derya"],0,"Defterdar gelir-gider kayıtlarını ve bütçeyi takip eder."],
+["Divan","Kadı ve müderris atamalarında rol oynayan Divan üyesi kimdir?",["Şeyhülislam","Kazasker","Nişancı","Sadrazam"],1,"Kazasker ilmiyenin yüksek görevlisidir; kadı ve müderris atamalarına bakar."],
+["Divan","Protokolde daha üst konumda olan kazasker hangisidir?",["Anadolu kazaskeri","Rumeli kazaskeri","Mısır kazaskeri","İkisi eşittir"],1,"Rumeli kazaskeri protokolde Anadolu kazaskerinden üstteydi."],
+["Divan","Zamanla diplomasi ve dış ilişkilerde ağırlığı artan, 1836'da Hariciye Nezareti'ne dönüşen görevli kimdir?",["Nişancı","Reisülküttap","Defterdar","Kazasker"],1,"Reisülküttap Divan yazışmalarını yürütürdü; 1836'da Hariciye Nezareti kuruldu."],
+["Divan","Donanmanın başkomutanı olan görevli kimdir?",["Yeniçeri ağası","Kaptan-ı derya","Beylerbeyi","Silahtar"],1,"Kaptan-ı derya donanmanın başıdır."],
+["Saray","Kapıcılar, çavuşlar, mehterler, seyisler ve bostancılar sarayın hangi bölümünde görev yapardı?",["Enderun","Harem","Birun","Bâbıâli"],2,"Birun sarayın dış hizmetleridir."],
+["Saray","Saray içinde devşirme kökenli yetenekli çocuklara yönetici eğitimi veren kurum hangisidir?",["Medrese","Enderun","Sıbyan mektebi","Mühendishane"],1,"Enderun saraya bağlı nitelikli yönetici kadrosu yetiştirirdi."],
+["Saray","Harem teşkilatında önemli görevi olan ağa hangisidir?",["Yeniçeri Ağası","Darüssaade Ağası","Bostancıbaşı","Kapı Ağası"],1,"Darüssaade Ağası harem teşkilatının önemli görevlisidir."],
+["Saray","Valide Sultanlar özellikle hangi dönemden sonra siyasette etkili olabilmiştir?",["14. yüzyıl","15. yüzyıl başı","16. yüzyıl sonrası","Tanzimat sonrası"],2,"Valide Sultanlar 16. yüzyıl sonrasında zaman zaman siyasette etkili oldu."],
+["Taşra","Klasik dönem taşra idari hiyerarşisinin doğru sıralaması hangisidir?",["Sancak → Eyalet → Kaza → Köy","Eyalet → Sancak → Kaza → Köy","Eyalet → Kaza → Sancak → Köy","Kaza → Sancak → Eyalet → Köy"],1,"Eyalet (beylerbeyi) → Sancak (sancakbeyi) → Kaza (kadı) → Köy."],
+["Taşra","Kazanın başında bulunan görevli kimdir?",["Sancakbeyi","Subaşı","Kadı","Beylerbeyi"],2,"Kaza, kadının görev yaptığı adli-idari çevredir."],
+["Taşra","Kadı mahkemesi kayıtları nerede tutulurdu?",["Tahrir defterleri","Şer'iyye sicilleri","Mühimme defterleri","Ruznamçe"],1,"Mahkeme kayıtları şer'iyye sicillerinde tutulurdu."],
+["Taşra","Aşağıdakilerden hangisi salyaneli eyalete örnektir?",["Anadolu","Rumeli","Mısır","Karaman"],2,"Salyaneli: Mısır, Bağdat, Yemen, Basra. Anadolu, Rumeli, Karaman salyanesizdir."],
+["Taşra","Salyanesiz eyaletlerin temel özelliği nedir?",["Gelirler merkeze aktarılır","Dirlik-tımar sistemi yaygındır","Yerel hanedanlar yönetir","Vergi alınmaz"],1,"Salyanesiz eyaletlerde dirlik-tımar sistemi uygulanırdı."],
+["Taşra","Aşağıdakilerden hangisi özel statülü bölgelerden biri DEĞİLDİR?",["Eflak","Boğdan","Kırım","Karaman"],3,"Eflak, Boğdan, Erdel, Kırım özel statülüdür. Karaman salyanesiz eyalettir."],
+["Askerî","Pençik sistemi neye dayanır?",["Gayrimüslim çocukların toplanmasına","Savaş esirlerinin beşte birinin devlet payı olarak alınmasına","Tımar gelirinin beşte birine","Gönüllü asker alımına"],1,"Pençik = savaş esirlerinin beşte biri (pencik: beşte bir)."],
+["Askerî","Yeniçeri Ocağı'nın hangi padişah döneminde kurulduğu kabul edilir?",["Orhan Gazi","I. Murad","Fatih","Yavuz"],1,"Yeniçeri Ocağı I. Murad döneminde kurulduğu kabul edilen merkez piyade kuvvetidir."],
+["Askerî","Kapıkulu askerine verilen üç aylık maaşa ne ad verilir?",["Cülus bahşişi","Ulufe","Salyane","Cizye"],1,"Ulufe üç aylık maaştır; cülus bahşişi padişah tahta çıkınca verilir."],
+["Askerî","Padişahın tahta çıkışında askere verilen ödeme hangisidir?",["Ulufe","Cülus bahşişi","Avarız","Haraç"],1,"Cülus = tahta çıkış. Cülus bahşişi bu sırada verilen ödemedir."],
+["Askerî","Tünel kazma ve kuşatma faaliyetlerinden sorumlu kapıkulu ocağı hangisidir?",["Cebeciler","Humbaracılar","Lağımcılar","Topçular"],2,"Lağımcılar tünel kazar; humbaracılar patlayıcı, cebeciler silah bakımı."],
+["Askerî","Silahların yapımı, bakımı ve muhafazasıyla görevli ocak hangisidir?",["Cebeciler","Bostancılar","Top arabacıları","Lağımcılar"],0,"Cebeciler silah yapımı, bakımı ve muhafazasıyla görevliydi."],
+["Askerî","Aşağıdakilerden hangisi kapıkulu süvari bölüklerinden biri DEĞİLDİR?",["Silahtarlar","Sağ Garipler","Sol Ulufeciler","Humbaracılar"],3,"Altı bölük: Sipahiler, Silahtarlar, Sağ/Sol Ulufeciler, Sağ/Sol Garipler. Humbaracılar piyadedir."],
+["Askerî","Tımarlı sipahinin savaşa gelirine göre getirdiği yardımcı askere ne denir?",["Sekban","Cebelü","Levent","Müsellem"],1,"Cebelü, tımarlı sipahinin gelirine göre yetiştirip getirdiği askerdir."],
+["Askerî","Tımarlı sipahi ile ilgili hangisi DOĞRUDUR?",["Toprağın sahibidir","Devletten üç aylık maaş alır","Dirlik gelirinden yararlanma hakkı karşılığı hizmet verir","Kapıkulu piyadesidir"],2,"Tımarlı sipahi toprağın sahibi değildir; dirlik geliri karşılığı hizmet eden eyalet süvarisidir."],
+["Askerî","Yeniçeri Ocağı hangi olayla kaldırıldı?",["Patrona Halil İsyanı","Kabakçı Mustafa İsyanı","Vak'a-i Hayriye","Edirne Vakası"],2,"1826'da II. Mahmud döneminde Vak'a-i Hayriye ile kaldırıldı."],
+["Askerî","Yeniçeri Ocağı'nın yerine kurulan ordu hangisidir?",["Nizam-ı Cedid","Asâkir-i Mansûre-i Muhammediye","Sekban-ı Cedid","Redif"],1,"1826'dan sonra Asâkir-i Mansûre-i Muhammediye kuruldu. Nizam-ı Cedid III. Selim'indir."],
+["Askerî","Aşağıdakilerden hangisi sunumda öne çıkan Osmanlı denizcilerinden biri DEĞİLDİR?",["Turgut Reis","Piyale Paşa","Kılıç Ali Paşa","Kalenderoğlu"],3,"Kalenderoğlu bir Celali lideridir."],
+["Hukuk","Aşağıdakilerden hangisi şer'i hukukun kaynaklarından biri DEĞİLDİR?",["Kur'an","İcma","Kıyas","Kanunname"],3,"Kanunnameler örfî hukukun kaynağıdır. Şer'i: Kur'an, sünnet, icma, kıyas."],
+["Hukuk","Örfî hukuk için hangisi doğrudur?",["Sadece aile ve miras konularını düzenler","Padişahın kamu düzeni için koyduğu kurallardır ve şer'i hukuka aykırı olamaz","Şer'i hukuktan üstündür","Kadılar uygulamaz"],1,"Örfî hukuk vergi, toprak, güvenlik, idare alanında; şer'i hukuka aykırı olmamak kaydıyla."],
+["Hukuk","Dinî ve hukuki meselelerde fetva veren en yüksek makam hangisidir?",["Kadı","Kazasker","Şeyhülislam","Nişancı"],2,"Şeyhülislam fetva verir; kadı hüküm verir."],
+["Hukuk","İlk Osmanlı şeyhülislamı olarak genellikle kim kabul edilir?",["Davud-ı Kayserî","Molla Fenari","Ebussuud Efendi","Molla Hüsrev"],1,"İlk şeyhülislam Molla Fenari; ilk müderris Davud-ı Kayserî."],
+["Toprak","Mülkiyeti devlete ait olan, gelir ve kullanım hakkı tahsis edilen araziye ne denir?",["Mülk","Vakıf","Miri","Haraç"],2,"Miri arazi devletindir; dirlik sistemi bunun üzerine kuruludur."],
+["Toprak","Vakfı yöneten kişiye ne ad verilir?",["Vâkıf","Mütevelli","Mültezim","Müderris"],1,"Vâkıf vakfı kuran; mütevelli yöneten kişidir."],
+["Toprak","Yıllık geliri 20.000–100.000 akçe arasında olan dirlik hangisidir?",["Has","Zeamet","Tımar","Malikâne"],1,"Has 100.000+; zeamet 20.000–100.000; tımar 3.000–20.000."],
+["Toprak","Yıllık geliri 100.000 akçeden fazla olan dirliğe ne denir?",["Has","Zeamet","Tımar","Ocaklık"],0,"Has en büyük dirliktir."],
+["Toprak","Aşağıdakilerden hangisi tımar sisteminin amaçlarından biri DEĞİLDİR?",["Nakit maaş ödemeden asker beslemek","Tarımsal üretimi sürdürmek","Taşrada güvenliği sağlamak","Toprağı köylünün özel mülkü yapmak"],3,"Amaçlar: askerî, mali, üretim, idari. Toprak miridir, özel mülk yapılmaz."],
+["Maliye","Vergi toplama hakkının açık artırmayla belirli bir süre için verilmesi hangi sistemdir?",["Malikâne","İltizam","Tımar","Salyane"],1,"İltizamda mültezim taahhüt ettiği bedeli öder, vergiyi toplar."],
+["Maliye","Malikâne sistemi hangi yıl uygulanmaya başlandı?",["1695","1718","1773","1839"],0,"Malikâne 1695'te başladı; çoğunlukla kaydıhayat şartlıdır."],
+["Maliye","Malikâne sistemini iltizamdan ayıran temel özellik nedir?",["Açık artırma olması","Kaydıhayat (ömür boyu) şartı","Vergi toplanmaması","Askerî hizmet karşılığı olması"],1,"İltizam süreli; malikâne çoğunlukla kaydıhayat şartlıdır."],
+["Maliye","Müslümanların tarımsal üretiminden alınan şer'i vergi hangisidir?",["Cizye","Haraç","Öşür","Avarız"],2,"Öşür Müslümanların tarım ürününden alınır."],
+["Maliye","Belirli muafiyetler dışında gayrimüslim erkeklerden alınan baş vergisi hangisidir?",["Öşür","Cizye","İspenç","Nüzul"],1,"Cizye gayrimüslim erkeklerden alınan baş vergisidir."],
+["Maliye","Aşağıdakilerden hangisi örfî vergi DEĞİLDİR?",["Avarız","Sürsat","Öşür","Çift resmi"],2,"Öşür şer'i vergidir. Örfî: çift resmi, avarız, nüzul, sürsat, ispenç."],
+["Eğitim","İlk Osmanlı müderrisi olarak kim kabul edilir?",["Molla Fenari","Davud-ı Kayserî","Ali Kuşçu","Akşemseddin"],1,"İznik medresesinin ilk müderrisi Davud-ı Kayserî'dir."],
+["Eğitim","Sahn-ı Seman medreseleri hangi padişah döneminde öne çıktı?",["Orhan Gazi","Fatih","Kanuni","III. Selim"],1,"Fatih → Sahn-ı Seman; Kanuni → Süleymaniye."],
+["Eğitim","Kur'an okuma, temel dinî bilgiler, yazı ve hesap öğretilen temel eğitim kurumu hangisidir?",["Medrese","Enderun","Sıbyan mektebi","Mühendishane"],2,"Sıbyan mektepleri temel eğitim kurumudur."],
+["Eğitim","Enderun ile medrese karşılaştırmasında hangisi doğrudur?",["İkisi de ulema yetiştirir","Enderun saray bürokratı, medrese ulema yetiştirir","Medrese saray içindedir","Enderun vakıflarla finanse edilen mahalle okuludur"],1,"Enderun = saray bürokratı; medrese = ulema ve ilmiye. Birbirinin alternatifi değiller."],
+["Dönüşüm","Aşağıdakilerden hangisi Celali isyan liderlerinden biri DEĞİLDİR?",["Karayazıcı","Deli Hasan","Canbolatoğlu","Patrona Halil"],3,"Celali liderleri: Karayazıcı, Deli Hasan, Kalenderoğlu, Canbolatoğlu. Patrona Halil 1730'da Lale Devri'ni bitiren isyanın lideridir."],
+["Dönüşüm","Köylülerin güvenlik ve geçim sorunları nedeniyle köylerini terk ederek göç etmesine ne denir?",["İskân","Büyük Kaçgun","Sürgün","İstimalet"],1,"Büyük Kaçgun, Celali isyanlarıyla bağlantılı kırsal göçtür."],
+["Dönüşüm","Celali İsyanları'nın nedenleri arasında hangisi sayılamaz?",["Ağır vergiler","Tımar düzenindeki sorunlar","İşsiz sekban ve leventler","Tanzimat Fermanı"],3,"Celali İsyanları 16. yy sonu–17. yy başıdır; Tanzimat 1839'dur."],
+["Reform","Lale Devri hangi yıllar arasındadır?",["1683–1699","1718–1730","1789–1807","1808–1839"],1,"Lale Devri 1718–1730: Avrupa'yı tanıma, kültürel-teknik yenilik."],
+["Reform","1773'te kurulan askerî teknik eğitim kurumu hangisidir?",["Mühendishane-i Berr-i Hümayun","Mühendishane-i Bahr-i Hümayun","Harbiye","Tıbbiye"],1,"1773: Mühendishane-i Bahr-i Hümayun (deniz mühendishanesi)."],
+["Reform","Nizam-ı Cedid ordusu ve İrad-ı Cedid hazinesi hangi padişaha aittir?",["III. Ahmed","III. Selim","II. Mahmud","Abdülmecid"],1,"III. Selim (1789–1807)."],
+["Reform","Can, mal ve namus güvenliğini gündeme getiren ferman hangisidir?",["Islahat Fermanı (1856)","Tanzimat Fermanı (1839)","Kanun-ı Esasi (1876)","Sened-i İttifak"],1,"1839 Tanzimat Fermanı."],
+["Reform","Gayrimüslim tebaanın hakları ve devlet hizmetine katılımı konusunda düzenlemeler getiren 1856 tarihli belge hangisidir?",["Tanzimat Fermanı","Islahat Fermanı","Kanun-ı Esasi","Fatih Kanunnamesi"],1,"1856 Islahat Fermanı."],
+["Reform","Kanun-ı Esasi hangi yıl ilan edildi?",["1839","1856","1876","1908"],2,"1876'da Kanun-ı Esasi ilan edildi, I. Meşrutiyet başladı."]
+];
+
+const F=[
+["Sadrazam","Padişahın mührünü taşır, Divan'a başkanlık eder, padişah adına yürütür."],
+["Nişancı","Fermanlara tuğra çeker; kanun, örfî hukuk ve arazi kayıtları."],
+["Defterdar","Maliye ve hazine; gelir-gider kayıtları."],
+["Kazasker","Kadı ve müderris atamaları; ilmiye teşkilatı. Rumeli kazaskeri üstte."],
+["Reisülküttap","Divan yazışmaları, zamanla diplomasi. 1836 Hariciye Nezareti."],
+["Şeyhülislam","Fetva veren en yüksek ilmiye makamı. İlki Molla Fenari."],
+["Kadı","Kazada yargılar, hüküm verir; pazar ve vakıf denetimi. Kayıtlar şer'iyye sicillerinde."],
+["Kaptan-ı derya","Donanmanın başkomutanı."],
+["Beylerbeyi","Eyaletin askerî ve idari yöneticisi."],
+["Sancakbeyi","Sancakta güvenlik, asker toplama, merkez emirlerini uygulama."],
+["Birun","Sarayın dış hizmetleri: kapıcılar, çavuşlar, mehterler, seyisler, bostancılar."],
+["Enderun","Saray içinde devşirme kökenli çocuklardan yönetici yetiştiren okul."],
+["Harem","Padişah ailesinin yaşadığı bölüm; Darüssaade Ağası önemli görevli."],
+["Ekberiyet","Hanedanın en yaşlı erkek üyesinin tahta geçmesi (I. Ahmed)."],
+["Erşed","En olgun/uygun olanın tahta geçmesi."],
+["Nizam-ı âlem","Devlet düzeni ve toplumsal istikrarın korunması düşüncesi."],
+["İstimalet","Fethedilen yerde halkı yönetime ısındıran uzlaştırıcı siyaset."],
+["Pençik","Savaş esirlerinin beşte birinin devlet payı olarak alınması."],
+["Devşirme","Balkanlardaki gayrimüslim erkek çocukların toplanıp askerî veya saray hizmetine yetiştirilmesi."],
+["Acemi Oğlanlar Ocağı","Devşirmelerin askerî ve saray eğitimine hazırlandığı kurum."],
+["Yeniçeri Ocağı","I. Murad döneminde kurulan merkez piyade; 1826'da kaldırıldı."],
+["Ulufe","Kapıkulu askerinin üç aylık maaşı."],
+["Cülus bahşişi","Padişah tahta çıkınca askere verilen ödeme."],
+["Cebelü","Tımarlı sipahinin gelirine göre savaşa getirdiği yardımcı asker."],
+["Tımarlı sipahi","Dirlik geliri karşılığı hizmet veren eyalet süvarisi; toprağın sahibi değil."],
+["Lağımcılar","Tünel kazma ve kuşatma işleri."],
+["Humbaracılar","Humbara ve patlayıcı mühimmat."],
+["Cebeciler","Silah yapımı, bakımı, muhafazası."],
+["Vak'a-i Hayriye","1826, II. Mahmud: Yeniçeri Ocağı'nın kaldırılması. Yerine Asâkir-i Mansûre-i Muhammediye."],
+["Şer'i hukuk","İslam hukuku: Kur'an, sünnet, icma, kıyas. Aile, miras, vakıf, borç."],
+["Örfî hukuk","Padişahın kamu düzeni için koyduğu kurallar; kanunnameler. Şer'e aykırı olamaz."],
+["Fetva","Bir mesele hakkında verilen hukukî-dinî görüş; her zaman mahkeme hükmü değildir."],
+["Miri arazi","Mülkiyeti devlete ait toprak; gelir/kullanım hakkı tahsis edilir."],
+["Mülk arazi","Özel mülkiyet; satılabilir, miras bırakılabilir."],
+["Dirlik","Miri arazi gelirinin hizmet karşılığı görevliye tahsisi."],
+["Has","100.000 akçeden fazla yıllık gelirli dirlik."],
+["Zeamet","20.000–100.000 akçe yıllık gelirli dirlik."],
+["Tımar","3.000–20.000 akçe yıllık gelirli dirlik."],
+["İltizam","Vergi toplama hakkının açık artırmayla süreli olarak mültezime verilmesi."],
+["Malikâne","1695; vergi toplama hakkının peşin ödemeyle çoğunlukla kaydıhayat şartıyla verilmesi."],
+["Salyaneli eyalet","Geliri merkez hazineye giden, görevlilere yıllık ödeme yapılan eyalet (Mısır, Bağdat, Yemen, Basra)."],
+["Öşür","Müslümanların tarımsal üretiminden alınan şer'i vergi."],
+["Cizye","Gayrimüslim erkeklerden alınan baş vergisi."],
+["Örfî vergiler","Çift resmi, avarız, nüzul, sürsat, ispenç."],
+["Vâkıf / Mütevelli","Vâkıf vakfı kurar; mütevelli vakfı yönetir."],
+["Sahn-ı Seman","Fatih döneminin medreseleri. (Kanuni: Süleymaniye)"],
+["Davud-ı Kayserî","İlk Osmanlı müderrisi (İznik, 1331)."],
+["Büyük Kaçgun","Celali döneminde köylülerin köylerini terk edip göç etmesi."],
+["Nizam-ı Cedid","III. Selim'in yeni ordusu; hazinesi İrad-ı Cedid."]
+];
+
+const O=[
+["Divan-ı Hümayun'un üyelerini ve görevlerini açıklayınız.",
+ "<h4>Tanım</h4><p>Divan-ı Hümayun, devlet işlerinin görüşüldüğü en önemli merkezî yönetim ve danışma organıdır. Parlamento değil, padişahın yürütme ve danışma organıdır.</p><h4>Arka plan</h4><p>Erken dönemde padişahın başkanlığında toplanırdı; Fatih'ten itibaren sadrazam başkanlık etti.</p><h4>Üyeler</h4><ul><li><b>Sadrazam:</b> mührü taşır, Divan'a başkanlık, padişah adına yürütme.</li><li><b>Vezirler:</b> sadrazama yardım, askerî-idari görev.</li><li><b>Kazasker:</b> kadı/müderris atamaları, ilmiye. Rumeli ve Anadolu; Rumeli üstte.</li><li><b>Defterdar:</b> maliye, hazine, bütçe.</li><li><b>Nişancı:</b> tuğra, kanun, arazi kayıtları.</li><li><b>Reisülküttap:</b> yazışmalar, zamanla diplomasi (1836 Hariciye Nezareti).</li><li><b>Yeniçeri ağası ve kaptan-ı derya:</b> askerî ve denizcilik konularında bilgi.</li></ul><h4>Sonuç</h4><p>Toplantı sonrası sadrazam padişaha arz eder. 17. yy'da İkindi Divanı, 18. yy'da Bâbıâli öne çıkınca Divan'ın ağırlığı azaldı.</p>"],
+["Fatih döneminde merkez teşkilatında yaşanan değişimleri değerlendiriniz.",
+ "<h4>Tanım/bağlam</h4><p>Fatih dönemi merkezî otoritenin güçlendiği, kurumların sistemli hâle geldiği dönemdir.</p><h4>Değişimler</h4><ul><li>Padişah Divan toplantılarına doğrudan katılmamaya başladı; toplantıları <b>sadrazam</b> yönetti → sadrazamın fiilî gücü arttı.</li><li><b>Fatih Kanunnamesi</b>: kardeş katlini nizam-ı âlem gerekçesiyle düzenledi; taht kavgalarını sınırlama amacı.</li><li>Divan, saray, kanunname ve bürokrasi sistemleşti; merkezî otorite güçlendi.</li><li>Eğitimde Sahn-ı Seman medreseleri kuruldu.</li></ul><h4>Sonuç</h4><p>Fatih'in düzenlemeleri klasik dönem merkez teşkilatının temelini oluşturdu; padişahın otoritesi kurumlar aracılığıyla yürütülür oldu.</p>"],
+["Osmanlı taşra teşkilatında beylerbeyi, sancakbeyi ve kadının görevlerini karşılaştırınız.",
+ "<h4>Tanım</h4><p>Taşra teşkilatı merkezî yönetimin geniş coğrafyada uygulanmasını sağlar. Hiyerarşi: Eyalet → Sancak → Kaza → Köy.</p><h4>Karşılaştırma</h4><ul><li><b>Beylerbeyi:</b> eyaletin askerî ve idari yöneticisi; seferde eyalet askerini sevk eder.</li><li><b>Sancakbeyi:</b> sancakta güvenlik, asker toplama, merkez emirlerini uygulama.</li><li><b>Kadı:</b> kazada şer'i ve örfî hukukla yargılama (evlilik, miras, borç, mülkiyet); pazar, vakıf ve beledî işler; kayıtlar şer'iyye sicillerinde.</li></ul><h4>Sonuç</h4><p>Beylerbeyi ve sancakbeyi askerî-idari, kadı esas olarak adli görevlidir. Bu ayrım yetkiyi dengeler ve merkezin taşrayı denetlemesini kolaylaştırır.</p>"],
+["Pençik ve devşirme sistemlerinin farklarını açıklayınız.",
+ "<h4>Tanım</h4><ul><li><b>Pençik:</b> savaş esirlerinin beşte birinin devlet payı olarak alınması.</li><li><b>Devşirme:</b> özellikle Balkanlardaki gayrimüslim erkek çocukların belirli usullerle toplanması.</li></ul><h4>Farklar</h4><ul><li>Kaynak: pençikte <b>savaş esiri</b>, devşirmede <b>tebaadan çocuk</b>.</li><li>Pençik kapıkulunun <b>erken</b> insan kaynağıdır; devşirme daha düzenli ve sürekli bir sistemdir.</li><li>Devşirmeler Acemi Oğlanlar Ocağı'nda veya Enderun'da eğitilir, yeteneğe göre askerî veya saray hizmetine yönlendirilir.</li></ul><h4>Sonuç</h4><p>İkisi de devletin kendisine bağlı asker ve yönetici kadrosu oluşturmasına hizmet etti.</p>"],
+["Kapıkulu askerleri ile eyalet askerlerini karşılaştırınız.",
+ "<h4>Kapıkulu</h4><ul><li>Doğrudan padişaha bağlı, maaşlı (ulufe), sürekli merkez ordusu.</li><li>Kaynak: pençik ve devşirme; eğitim Acemi Oğlanlar Ocağı.</li><li>Piyade: yeniçeriler, cebeciler, topçular, top arabacıları, humbaracılar, lağımcılar, bostancılar. Süvari: 6 bölük.</li></ul><h4>Eyalet askerleri</h4><ul><li>En önemlisi tımarlı sipahiler: maaş yerine dirlik geliri.</li><li>Savaşta cebelü getirir; barışta yerel güvenlik.</li><li>Toprağın sahibi değil, gelir hakkı sahibi.</li></ul><h4>Sonuç</h4><p>Kapıkulu merkezin sürekli gücüdür ve hazineye nakit yükü getirir; tımar sistemi ise hazineye yük olmadan taşrada büyük süvari ordusu sağlar. İkisi birbirini tamamlar.</p>"],
+["Şer'i hukuk ve örfî hukukun Osmanlı hukuk sistemindeki yerini açıklayınız.",
+ "<h4>Şer'i hukuk</h4><p>İslam hukukuna dayanır: Kur'an, sünnet, icma, kıyas. Aile, miras, vakıf, borç, mülkiyet alanlarında uygulanır.</p><h4>Örfî hukuk</h4><p>Padişahın kamu düzeni ve devlet yönetimi için koyduğu kurallardır. Vergi, toprak, güvenlik ve idare alanlarında önemlidir. Kaynağı kanunnamelerdir; şer'i hukuka aykırı olamaz.</p><h4>İşleyiş</h4><p>Kadı her ikisini de uygular ve hüküm verir; şeyhülislam fetva verir; kazasker atamaları yapar. Nişancı örfî hukuk uzmanıdır.</p><h4>Sonuç</h4><p>Osmanlı hukukunu yalnızca şer'i hukukla açıklamak eksiktir; ikisi birlikte işleyen bir sistemdir.</p>"],
+["Dirlik sisteminin işleyişini ve amaçlarını değerlendiriniz.",
+ "<h4>Tanım</h4><p>Dirlik, miri arazi gelirlerinin hizmet karşılığında görevlilere tahsis edilmesidir. Dirlik sahibi toprağın sahibi değil, gelir hakkının sahibidir.</p><h4>Türler</h4><ul><li>Has: 100.000+ akçe</li><li>Zeamet: 20.000–100.000 akçe</li><li>Tımar: 3.000–20.000 akçe</li></ul><h4>Amaçlar</h4><ul><li>Askerî: tımarlı sipahi ve cebelüler.</li><li>Mali: nakit maaş ödemeden asker beslemek.</li><li>Üretim: toprağın işlenmesini sürdürmek.</li><li>İdari: taşrada güvenlik, merkezin nüfuzu.</li></ul><h4>Sonuç</h4><p>Salyanesiz eyaletlerde yaygındı. Usulsüz tahsis, nakit ihtiyacı ve savaş biçiminin değişmesiyle zayıfladı; yerini iltizama bıraktı.</p>"],
+["İltizam ve malikâne sistemlerini karşılaştırınız.",
+ "<h4>İltizam</h4><p>Belirli bir vergi gelirini toplama hakkının açık artırmayla mültezime bırakılmasıdır. Mültezim bedeli öder, vergiyi toplar. Süreli bir haktır. Nakit ihtiyacı ve uzun savaşlar yaygınlaşmasını sağladı.</p><h4>Malikâne</h4><p>1695'te başladı. Vergi toplama hakkı peşin ödeme ve yıllık yükümlülük karşılığında çoğunlukla <b>kaydıhayat</b> şartıyla verilir. Amaç hazineye düzenli ve uzun vadeli gelir.</p><h4>Fark</h4><p>İltizamda süreli hak, malikânede ömür boyu hak öne çıkar.</p><h4>Sonuç</h4><p>İkisi de tımarın zayıflaması ve devletin nakit ihtiyacının artmasıyla öne çıkan mali dönüşümün parçasıdır.</p>"],
+["Enderun ile medresenin işlevlerini karşılaştırınız.",
+ "<h4>Enderun</h4><p>Saray içinde, devşirme kökenli yetenekli çocuklara dil, din, tarih, edebiyat, matematik, sanat, protokol ve yönetim eğitimi verir. Amaç saraya bağlı devlet yöneticisi yetiştirmek.</p><h4>Medrese</h4><p>İlki 1331 İznik (Orhan Gazi, ilk müderris Davud-ı Kayserî). Tefsir, hadis, fıkıh, kelam, Arapça, mantık okutulur. Ulema ve ilmiye görevlisi (kadı, müderris, müftü) yetiştirir. Fatih'te Sahn-ı Seman, Kanuni'de Süleymaniye. Vakıflarla finanse edilir.</p><h4>Sonuç</h4><p>Enderun = saray bürokratı, medrese = ulema. Birbirinin alternatifi değil, farklı insan kaynağı ihtiyaçlarını karşılayan kurumlardır.</p>"],
+["17. yüzyıldan itibaren Osmanlı kurumlarında görülen değişimleri açıklayınız.",
+ "<h4>Nedenler</h4><ul><li>Coğrafi keşifler, değerli maden akışı, fiyat artışı, akçenin değer kaybı.</li><li>Uzun savaşlar ve ateşli silahların yaygınlaşması.</li><li>Rüşvet, iltimas, taşrada denetim sorunu.</li></ul><h4>Değişimler</h4><ul><li><b>Merkez:</b> Divan'ın ağırlığı azaldı; İkindi Divanı, sonra Bâbıâli öne çıktı. Ekberiyet ilkesi yerleşti.</li><li><b>Maliye:</b> tımar zayıfladı; iltizam, 1695'te malikâne.</li><li><b>Ordu:</b> Yeniçeri disiplini bozuldu (usulsüz kayıt, esnaflık, siyasete müdahale); 1826'da kaldırıldı.</li><li><b>Taşra:</b> Celali İsyanları, Büyük Kaçgun.</li><li><b>Reform:</b> Lale Devri, 1773 Mühendishane, Nizam-ı Cedid, II. Mahmud, Tanzimat, Islahat, Kanun-ı Esasi.</li></ul><h4>Sonuç</h4><p>Bu süreç sadece bir 'bozulma' değil; ekonomik ve askerî dönüşüme uyum çabasıdır ve modern bürokratik yapılara geçişi hızlandırmıştır.</p>"]
+];
+
+const T=[
+["1243","Kösedağ Savaşı","Selçuklu otoritesi zayıfladı, beylikler güçlendi."],
+["1326","Bursa'nın fethi","Başkent yapıldı (Orhan Gazi)."],
+["1331","İznik Medresesi","İlk Osmanlı medresesi; ilk müderris Davud-ı Kayserî."],
+["1362–1389","I. Murad","Edirne başkent; Yeniçeri Ocağı, beylerbeylik, kazaskerlik."],
+["1453","İstanbul'un fethi","Fatih: merkezî otorite, Divan ve kanunname sistemleşti."],
+["16. yy sonu","Celali İsyanları","Büyük Kaçgun; Yeniçeri disiplininde bozulma başlar."],
+["1695","Malikâne","Kaydıhayat şartlı vergi toplama hakkı."],
+["1718–1730","Lale Devri","Avrupa'yı tanıma, kültürel-teknik yenilik."],
+["1773","Mühendishane-i Bahr-i Hümayun","Askerî teknik eğitim."],
+["1789–1807","III. Selim","Nizam-ı Cedid ordusu, İrad-ı Cedid hazinesi."],
+["1826","Vak'a-i Hayriye","Yeniçeri Ocağı kaldırıldı; Asâkir-i Mansûre-i Muhammediye."],
+["1836","Hariciye Nezareti","Reisülküttaplığın bakanlığa dönüşmesi."],
+["1839","Tanzimat Fermanı","Can, mal, namus güvenliği."],
+["1856","Islahat Fermanı","Gayrimüslimlerin hakları."],
+["1876","Kanun-ı Esasi","I. Meşrutiyet."]
+];
+
+/* storage helpers */
+const S={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=id=>document.getElementById(id);
+
+/* tabs */
+const tabs=["notlar","test","kartlar","klasik","kronoloji"];
+function show(){
+  let h=location.hash.slice(1); if(!tabs.includes(h)) h="notlar";
+  document.querySelectorAll("[data-view]").forEach(v=>v.hidden=v.id!=="v-"+h);
+  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.tab===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+}
+window.addEventListener("hashchange",()=>{show();window.scrollTo(0,0)});
+show();
+
+/* notes toc */
+document.querySelectorAll("section.note").forEach(s=>{
+  const a=document.createElement("button");a.type="button";a.className="chip";a.textContent=s.dataset.t;
+  a.onclick=()=>s.scrollIntoView({behavior:"smooth"});$("toc").appendChild(a);
+});
+
+/* quiz */
+const topics=["Hepsi",...new Set(Q.map(q=>q[0]))];
+let wrong=new Set(S.get("ok_wrong",[]));
+let qs=[],qi=0,correct=0,answered=0,topic="Hepsi",mode="normal";
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function renderFilters(){
+  const box=$("qfilters");box.innerHTML="";
+  topics.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip"+(t===topic&&mode==="normal"?" on":"");
+    const n=t==="Hepsi"?Q.length:Q.filter(q=>q[0]===t).length;b.textContent=t+" ("+n+")";
+    b.onclick=()=>{topic=t;mode="normal";startQuiz()};box.appendChild(b)});
+  $("qwrongbtn").textContent="Yanlışlarımı çöz ("+wrong.size+")";
+  $("qwrongbtn").disabled=wrong.size===0;
+  $("qwrongbtn").classList.toggle("on",mode==="wrong");
+}
+function startQuiz(){
+  let pool=Q.map((q,i)=>i);
+  if(mode==="wrong") pool=pool.filter(i=>wrong.has(i));
+  else if(topic!=="Hepsi") pool=pool.filter(i=>Q[i][0]===topic);
+  qs=shuffle(pool);qi=0;correct=0;answered=0;renderFilters();renderQ();
+}
+$("qwrongbtn").onclick=()=>{if(wrong.size){mode="wrong";startQuiz()}};
+function upd(){$("qscore").textContent="Soru "+Math.min(qi+1,qs.length)+" / "+qs.length+" · Doğru "+correct+" / "+answered;$("qprog").style.width=(qs.length?answered/qs.length*100:0)+"%"}
+function renderQ(){
+  const c=$("qcard");
+  if(qi>=qs.length){
+    const pct=qs.length?Math.round(correct/qs.length*100):0;
+    c.innerHTML='<div class="result"><div class="qtopic">Sonuç</div><div class="big">'+correct+' / '+qs.length+'</div><p class="muted" style="margin-top:10px">%'+pct+' başarı. '+(pct>=85?"Sınava hazırsın.":pct>=60?"İyi gidiyor, yanlışlarını bir kez daha çöz.":"Notlara dönüp yanlış konuları tekrar et.")+'</p><div class="actions" style="justify-content:center"><button class="btn" id="again" type="button">Yeniden başla</button>'+(wrong.size?'<button class="btn ghost" id="wr" type="button">Yanlışlarımı çöz ('+wrong.size+')</button>':'')+'</div></div>';
+    $("again").onclick=startQuiz; if($("wr"))$("wr").onclick=()=>{mode="wrong";startQuiz()};
+    $("qprog").style.width="100%";$("qscore").textContent="Bitti";return;
+  }
+  const idx=qs[qi],q=Q[idx];
+  const order=shuffle([0,1,2,3]);
+  c.innerHTML='<div class="qtopic">'+q[0]+'</div><div class="qtext">'+q[1]+'</div><div class="opts">'+order.map((o,k)=>'<button class="opt" type="button" data-o="'+o+'"><span class="k">'+"ABCD"[k]+'</span><span>'+q[2][o]+'</span></button>').join("")+'</div><div id="ex"></div>';
+  c.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const o=+b.dataset.o,ok=o===q[3];answered++;if(ok)correct++;
+    if(ok){wrong.delete(idx)}else{wrong.add(idx)} S.set("ok_wrong",[...wrong]);
+    c.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.o===q[3])x.classList.add("right")});
+    if(!ok)b.classList.add("wrong");
+    $("ex").innerHTML='<div class="expl"><b>'+(ok?"Doğru.":"Yanlış.")+'</b> '+q[4]+'</div><div class="actions"><button class="btn" id="next" type="button">'+(qi+1<qs.length?"Sonraki soru":"Sonucu gör")+'</button></div>';
+    $("next").onclick=()=>{qi++;renderQ()};$("next").focus();upd();renderFilters();
+  });
+  upd();
+}
+startQuiz();
+
+/* flashcards */
+let deck=[],fi=0,known=new Set();
+function startDeck(sh){deck=sh?shuffle(F.map((f,i)=>i)):F.map((f,i)=>i);deck=deck.filter(i=>!known.has(i));fi=0;renderF()}
+function renderF(){
+  $("flash").classList.remove("flip");
+  if(!deck.length){$("fword").textContent="Bitti";$("fdef").textContent="Bütün kartları bildin. Karıştır ile baştan başlayabilirsin.";$("fscore").textContent=F.length+" / "+F.length+" biliniyor";return}
+  fi=(fi+deck.length)%deck.length;const f=F[deck[fi]];
+  setTimeout(()=>{$("fword").textContent=f[0];$("fdef").textContent=f[1]},deck.length?120:0);
+  $("fscore").textContent="Kart "+(fi+1)+" / "+deck.length+" · Bilinen "+known.size+" / "+F.length;
+}
+$("flash").onclick=()=>$("flash").classList.toggle("flip");
+$("flash").onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();$("flash").classList.toggle("flip")}};
+$("fknow").onclick=()=>{if(!deck.length)return;known.add(deck[fi]);deck.splice(fi,1);renderF()};
+$("fagain").onclick=()=>{if(!deck.length)return;fi++;renderF()};
+$("fprev").onclick=()=>{if(!deck.length)return;fi--;renderF()};
+$("fshuffle").onclick=()=>{known=new Set();startDeck(true)};
+startDeck(true);
+
+/* open questions */
+$("openq").innerHTML=O.map((o,i)=>'<details><summary><span class="num">'+(i+1)+'</span><span>'+o[0]+'</span></summary><div class="ans">'+o[1]+'</div></details>').join("");
+
+/* timeline */
+/* welcome + celebration */
+(function(){
+  const w=$("welcome"),btn=$("ready"),cv=$("confetti"),ch=$("cheer");
+  document.body.style.overflow="hidden";btn.focus();
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  btn.onclick=()=>{
+    w.classList.add("out");ch.hidden=false;
+    const end=()=>{ch.hidden=true;cv.hidden=true;w.remove();document.body.style.overflow=""};
+    if(reduce){setTimeout(end,1600);return}
+    cv.hidden=false;const x=cv.getContext("2d"),dpr=window.devicePixelRatio||1;
+    const W=innerWidth,H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;x.scale(dpr,dpr);
+    const cols=["#1d4c9c","#0d7f80","#d4a017","#c0392b","#5b8def","#2fb5a8"];
+    const P=[];
+    for(let s=0;s<2;s++)for(let i=0;i<110;i++){const left=s===0;P.push({x:left?-10:W+10,y:H*0.75,vx:(left?1:-1)*(4+Math.random()*9),vy:-(9+Math.random()*12),r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:6+Math.random()*7,h:4+Math.random()*5,c:cols[i%cols.length]})}
+    for(let i=0;i<80;i++)P.push({x:Math.random()*W,y:-20-Math.random()*H*.5,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:6+Math.random()*7,h:4+Math.random()*5,c:cols[i%cols.length]});
+    const t0=performance.now();
+    (function f(t){
+      const el=t-t0;x.clearRect(0,0,W,H);x.globalAlpha=el>2600?Math.max(0,1-(el-2600)/700):1;
+      P.forEach(p=>{p.vy+=.28;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2)));x.restore()});
+      if(el<3300)requestAnimationFrame(f);else end();
+    })(t0);
+  };
+})();
+
+$("tl").innerHTML=T.map(t=>'<li><div class="y">'+t[0]+'</div><div><b>'+t[1]+'</b> <span class="muted">· '+t[2]+'</span></div></li>').join("");
+</script>
+
+</body>
+</html>
